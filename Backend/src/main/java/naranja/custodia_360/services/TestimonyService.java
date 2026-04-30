@@ -1,21 +1,26 @@
 package naranja.custodia_360.services;
 
 import naranja.custodia_360.models.Testimony;
-import naranja.custodia_360.repositories.TestimonyRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import tools.jackson.databind.ObjectMapper;
+
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 @Service
 public class TestimonyService {
 
-    private final TestimonyRepository repository;
     private final TranscriptionService transcriptionService;
+    private final ObjectMapper objectMapper;
 
-    public TestimonyService(TestimonyRepository repository, TranscriptionService transcriptionService) {
-        this.repository = repository;
+    public TestimonyService(TranscriptionService transcriptionService, ObjectMapper objectMapper) {
         this.transcriptionService = transcriptionService;
+        this.objectMapper = objectMapper;
     }
 
     public Testimony processAudio(MultipartFile audioFile) {
@@ -27,27 +32,31 @@ public class TestimonyService {
                 throw new RuntimeException("No se detectó voz en el audio");
             }
 
-            // 2. Crear y guardar la entidad
-            Testimony testimony = new Testimony();
-            testimony.setContent(text);
+            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            Testimony testimony = new Testimony(text, timestamp);
 
-            return repository.save(testimony);
+            // 3. Guardar en la carpeta /data
+            saveToJsonFile(testimony);
+
+            return testimony;
 
         } catch (Exception e) {
             throw new RuntimeException("Error procesando el testimonio: " + e.getMessage());
         }
     }
 
-    public Testimony processAudioFromStream(InputStream is) {
-        String text = transcriptionService.transcribe(is); // Usa el método que ya corregimos
+    private void saveToJsonFile(Testimony testimony) throws Exception {
+        String directoryPath = "data";
 
-        if (text == null || text.isBlank()) {
-            throw new RuntimeException("No se detectó voz");
-        }
+        // Crear carpeta si no existe
+        Files.createDirectories(Paths.get(directoryPath));
 
-        Testimony testimony = new Testimony();
-        testimony.setContent(text);
-        return repository.save(testimony);
+        // Generar un nombre de archivo único para evitar sobrescritura
+        String fileName = "testimony_" + UUID.randomUUID() + ".json";
+        File file = new File(directoryPath + File.separator + fileName);
+
+        // Escribir el JSON
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, testimony);
     }
 
 }
