@@ -39,15 +39,9 @@ export default function Home() {
       
       case 'interrogation':
         return (
-          <div className="grid grid-cols-12 gap-6 h-full">
-            <div className="col-span-3 overflow-y-auto">
-              <IdentityPanel />
-            </div>
-            <div className="col-span-6 overflow-hidden">
+          <div className="flex items-center justify-center h-full p-6">
+            <div className="w-full max-w-4xl h-full overflow-hidden">
               <TranscriptionPanel />
-            </div>
-            <div className="col-span-3 overflow-y-auto">
-              <AnalysisPanel />
             </div>
           </div>
         )
@@ -75,12 +69,14 @@ export default function Home() {
   }
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex flex-col md:flex-row h-[100dvh] bg-background">
       {/* Sidebar */}
-      <CustodiaSidebar activeView={activeView} onViewChange={setActiveView} />
+      <div className="hidden md:block">
+        <CustodiaSidebar activeView={activeView} onViewChange={setActiveView} />
+      </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Header */}
         <CustodiaHeader currentView={activeView} currentStep={activeView === 'guard-officer' ? currentStep : undefined} />
 

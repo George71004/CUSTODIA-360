@@ -10,11 +10,7 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { icon: <LayoutDashboard size={20} />, label: 'Dashboard', id: 'dashboard' },
-  { icon: <FileText size={20} />, label: 'Procesamiento', id: 'guard-officer' },
   { icon: <Mic2 size={20} />, label: 'Interrogatorios', id: 'interrogation' },
-  { icon: <Shield size={20} />, label: 'Auditoría', id: 'audit' },
-  { icon: <Settings size={20} />, label: 'Configuración', id: 'settings' },
 ]
 
 interface CustodiaSidebarProps {
@@ -58,23 +54,6 @@ export function CustodiaSidebar({ activeView, onViewChange }: CustodiaSidebarPro
         ))}
       </nav>
 
-      {/* System Status Footer */}
-      <div className="p-4 border-t border-sidebar-border space-y-3">
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <Circle size={8} className="fill-chart-3 text-chart-3 animate-pulse" />
-            <span className="text-xs text-muted-foreground">Microservicios</span>
-          </div>
-          <p className="text-xs font-mono text-primary">Online</p>
-        </div>
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <Circle size={8} className="fill-chart-3 text-chart-3 animate-pulse" />
-            <span className="text-xs text-muted-foreground">Conexión BD</span>
-          </div>
-          <p className="text-xs font-mono text-primary">Estable</p>
-        </div>
-      </div>
     </aside>
   )
 }
