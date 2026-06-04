@@ -35,7 +35,8 @@ public class TestimonyController {
         }
 
         String sessionId = testimonyService.saveTestimony(audio, originalTranscription);
+        String transcriptionReport = testimonyService.generateReport(originalTranscription);
 
-        return ResponseEntity.ok(new Testimony(originalTranscription, sessionId));
+        return ResponseEntity.ok(new Testimony(transcriptionReport, sessionId));
     }
 }

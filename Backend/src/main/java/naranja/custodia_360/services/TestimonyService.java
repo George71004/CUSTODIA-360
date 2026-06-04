@@ -6,4 +6,5 @@ import java.io.IOException;
 
 public interface TestimonyService {
     String saveTestimony(MultipartFile audio, String originalTranscription) throws IOException;
+    String generateReport(String originalTranscription);
 }
