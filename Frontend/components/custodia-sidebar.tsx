@@ -34,20 +34,20 @@ export function CustodiaSidebar({ activeView, onViewChange }: CustodiaSidebarPro
       </div>
 
       {/* Navigation Menu */}
-      <nav className="flex-1 flex flex-col items-center justify-center px-4 py-6">
+      <nav className="flex-1 flex flex-col items-center gap-4 px-4 py-6">
         {navItems.map((item) => (
           <button
             key={item.id}
             onClick={() => onViewChange(item.id)}
             className={cn(
-              'w-full max-w-[200px] flex flex-col items-center text-center gap-2.5 px-4 py-5 rounded-xl transition-all duration-300 font-semibold border border-transparent',
+              'w-full max-w-[190px] flex flex items-center text-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 font-semibold border border-transparent',
               activeView === item.id
                 ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-105 border-primary/10'
                 : 'text-sidebar-foreground hover:bg-secondary hover:text-primary'
             )}
           >
             <div className={cn(
-              'w-12 h-12 rounded-xl flex items-center justify-center transition-colors shadow-sm',
+              'w-10 h-10 rounded-xl flex items-center justify-center transition-colors shadow-sm shrink-0',
               activeView === item.id ? 'bg-primary-foreground/15 text-primary-foreground' : 'bg-secondary text-primary'
             )}>
               {item.icon}
